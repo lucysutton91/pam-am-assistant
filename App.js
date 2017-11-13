@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Picker, StyleSheet } from 'react-native'
+import TimePicker from 'components/TimePicker';
 
 class App extends Component {
   constructor(props) {
@@ -43,24 +44,27 @@ class App extends Component {
     }());
     return (
       <View style={styles.container}>
-        <Picker style={styles.picker} selectedValue={this.state.hour} onValueChange={this.updateHour}>
-          {
-            hours.map(hour => {
-              return <Picker.Item key={hour} label={hour} value={hour} />
-            })
-          }
-        </Picker>
-        <Picker style={styles.picker} selectedValue={this.state.minute} onValueChange={this.updateMinute}>
-          {
-            minutes.map(minute => {
-              return <Picker.Item key={minute} label={minute} value={minute} />
-            })
-          }
-        </Picker>
-        <Picker style={styles.picker} selectedValue={this.state.morningOrNight} onValueChange={this.updateAmPm}>
-          <Picker.Item key="am" label="am" value="am" />
-          <Picker.Item key="pm" label="pm" value="pm" />        
-        </Picker>
+        {
+        // <Picker style={styles.picker} selectedValue={this.state.hour} onValueChange={this.updateHour}>
+        //   {
+        //     hours.map(hour => {
+        //       return <Picker.Item key={hour} label={hour} value={hour} />
+        //     })
+        //   }
+        // </Picker>
+        // <Picker style={styles.picker} selectedValue={this.state.minute} onValueChange={this.updateMinute}>
+        //   {
+        //     minutes.map(minute => {
+        //       return <Picker.Item key={minute} label={minute} value={minute} />
+        //     })
+        //   }
+        // </Picker>
+        // <Picker style={styles.picker} selectedValue={this.state.morningOrNight} onValueChange={this.updateAmPm}>
+        //   <Picker.Item key="am" label="am" value="am" />
+        //   <Picker.Item key="pm" label="pm" value="pm" />        
+        // </Picker>
+      }
+        <TimePicker />
         <Text style={styles.text}>{this.state.hour + ':' + this.state.minute + ' ' + this.state.morningOrNight}</Text>
       </View>
     )
