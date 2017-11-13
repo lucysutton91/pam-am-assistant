@@ -1,50 +1,60 @@
-import React, { Component } from 'react'
-import DatePicker from 'react-native-datepicker'
-import { View, Text, StyleSheet } from 'react-native'
+import React, { Component } from 'react';
+import DatePicker from 'react-native-datepicker';
+import { View, Text, StyleSheet } from 'react-native';
+import store from '../store';
 
 export default class MyDatePicker extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-        time:"09:30",
-        changed: false
+    constructor(props) {
+        super(props)
+        // this.state = {
+        //     time:"09:30",
+        //     changed: false
+        // }
+        this.state = store.getState();
     }
-  }
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(() => this.setState(store.getState()));
+    }
 
-  render(){
-    return (
-        <View style={styles.container}>
-            <Text style={styles.text}>click to schedule wakeup</Text>
-            <DatePicker
-                style={styles.picker}
-                date={this.state.time}
-                mode="time"
-                format="HH:mm"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                minuteInterval={1}
-                showIcon={false}
-                customStyles={{
-                    dateInput: {
-                        borderRadius: 5
-                    }
-                }}
-                onDateChange={(time) => {this.setState({time: time, changed: true});}}
-            />
-            {
-                this.state.changed === true ?
-                <View style={styles.confirmed}>
-                    <Text>your alarm is set for {this.state.time}</Text>
-                </View>
-                :
-                <View style={styles.none}>
-                    <Text>no alarm scheduled</Text>
-                </View>
-            }
-            
-        </View>
-    )
-  }
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
+
+    render() {
+        console.log('state', this.state)
+        return (
+            <View style={styles.container}>
+                <Text style={styles.text}>click to schedule wakeup</Text>
+                <DatePicker
+                    style={styles.picker}
+                    date={this.state.time}
+                    mode="time"
+                    format="HH:mm"
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
+                    minuteInterval={1}
+                    showIcon={false}
+                    customStyles={{
+                        dateInput: {
+                            borderRadius: 5
+                        }
+                    }}
+                    onDateChange={(time) => { this.setState({ time: time, changed: true }); }}
+                />
+                {
+                    this.state.changed === true ?
+                        <View style={styles.confirmed}>
+                            <Text>your alarm is set for {this.state.time}</Text>
+                        </View>
+                        :
+                        <View style={styles.none}>
+                            <Text>no alarm scheduled</Text>
+                        </View>
+                }
+
+            </View>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
@@ -54,10 +64,10 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#F5FCFF'
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF'
     },
     picker: {
         width: 250,
@@ -73,7 +83,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         justifyContent: 'center'
     }
-  });
+});
 
 //   ,
 //   welcome: {
