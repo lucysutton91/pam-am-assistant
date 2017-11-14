@@ -1,30 +1,29 @@
-import React, { Component } from 'react';
-import { View, Text, Picker, StyleSheet } from 'react-native'
-import TimePicker from './components/TimePicker';
+import React from 'react';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+import store, { setAlarm, toggleAlarmStatus, setLeave, toggleLeaveStatus } from './store';
+import DatePicker from 'react-native-datepicker';
+import SetAlarm from './components/SetAlarm';
+import HomeScreen from './components/HomeScreen';
+import MorningScreen from './components/MorningScreen';
 
-class App extends Component {
-  constructor(props) {
-    super(props)
-  }
-
+export default class App extends React.Component {
   render() {
-    return (
-      <View style={styles.container}>
-        
-        <TimePicker />
-      </View>
-    )
+    return <SimpleApp />;
   }
 }
-export default App
+
+export const SimpleApp = StackNavigator({
+  Home: { screen: HomeScreen },
+  SetAlarm: { screen: SetAlarm },
+  MorningScreen: { screen: MorningScreen }
+});
 
 const styles = StyleSheet.create({
-  
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: '#fff',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF'
+    justifyContent: 'center'
   }
-})
-
+});

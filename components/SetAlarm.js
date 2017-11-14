@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import DatePicker from 'react-native-datepicker';
-import { View, Text, StyleSheet } from 'react-native';
-import store from '../store';
+import { View, Text, StyleSheet, Button } from 'react-native';
+import store, { setAlarm, toggleAlarmStatus, setLeave, toggleLeaveStatus } from '../store';
 
-export default class MyDatePicker extends Component {
+export default class SetAlarm extends React.Component {
+    static navigationOptions = {
+      title: 'Alarms',
+    };
     constructor(props) {
         super(props)
         this.state = store.getState();
@@ -11,11 +14,11 @@ export default class MyDatePicker extends Component {
     componentDidMount() {
         this.unsubscribe = store.subscribe(() => this.setState(store.getState()));
     }
-
+  
     componentWillUnmount() {
         this.unsubscribe();
     }
-
+  
     render() {
         console.log('state', this.state)
         return (
@@ -36,13 +39,25 @@ export default class MyDatePicker extends Component {
                                 borderRadius: 5
                             }
                         }}
-                        onDateChange={(time) => { this.setState({ wakeUpTime: time, alarmSet: true }); }}
+                        onDateChange={(time) => { 
+                          store.dispatch(setAlarm(time))
+                          store.dispatch(toggleAlarmStatus(true))
+                        }}
                     />
                     {
                         this.state.alarmSet === true ?
+                        <View>
                             <View style={styles.confirmed}>
                                 <Text>your alarm is set for {this.state.wakeUpTime}</Text>
                             </View>
+                            <Button
+                                onPress={(time) => { 
+                                    store.dispatch(toggleAlarmStatus(false))
+                                }}
+                                title="cancel"
+                                color="#0097F0"
+                            />
+                        </View>
                             :
                             <View style={styles.none}>
                                 <Text>no alarm scheduled</Text>
@@ -65,13 +80,25 @@ export default class MyDatePicker extends Component {
                                 borderRadius: 5
                             }
                         }}
-                        onDateChange={(time) => { this.setState({ leaveTime: time, leaveSet: true }); }}
+                        onDateChange={(time) => { 
+                          store.dispatch(setLeave(time))
+                          store.dispatch(toggleLeaveStatus(true))
+                         }}
                     />
                     {
                         this.state.leaveSet === true ?
+                        <View>
                             <View style={styles.confirmed}>
                                 <Text>departure is scheduled for {this.state.leaveTime}</Text>
                             </View>
+                            <Button
+                                onPress={(time) => { 
+                                    store.dispatch(toggleLeaveStatus(false))
+                                }}
+                                title="cancel"
+                                color="#0097F0"
+                            />
+                        </View>
                             :
                             <View style={styles.none}>
                                 <Text>no departure scheduled</Text>
@@ -82,9 +109,9 @@ export default class MyDatePicker extends Component {
             </View>
         )
     }
-}
+  }
 
-const styles = StyleSheet.create({
+  const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         textAlign: 'center',
@@ -92,9 +119,10 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        justifyContent: 'center',
+        // justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF'
+        backgroundColor: '#F5FCFF',
+        paddingTop: 20
     },
     picker: {
         width: 250,
@@ -109,5 +137,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 5,
         justifyContent: 'center'
+    },
+    none: {
+      alignItems: 'center'
     }
-});
+  });

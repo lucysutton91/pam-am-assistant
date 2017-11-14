@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
-import createLogger from 'redux-logger';
+import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
@@ -61,7 +61,7 @@ export function toggleAlarmStatus(boolean) {
     return action;
 }
 
-export function toogleLeaveStatus(boolean) {
+export function toggleLeaveStatus(boolean) {
     const action = { type: TOGGLE_LEAVE_STATUS, boolean };
     return action;
 }
@@ -80,14 +80,16 @@ function reducer(state = initialState, action) {
             newState = Object.assign({}, state, { wakeUpTime: action.time });
             break;
 
-        case UPDATE_WAKEUP:
-            newState = Object.assign({}, state, { wakeUpTime: action.time });
+        case SET_LEAVE:
+            newState = Object.assign({}, state, { leaveTime: action.time });
             break;
-
-        // case GET_ALARM:
-        //     newState = Object.assign({}, state, { wakeUpTime: action.time });
-        //     break;
-
+        case TOGGLE_ALARM_STATUS:
+            newState = Object.assign({}, state, { alarmSet: action.boolean });
+            break;
+        case TOGGLE_LEAVE_STATUS:
+            newState = Object.assign({}, state, { leaveSet: action.boolean });
+            break;
+        
         default:
             newState = state;
             break;
@@ -100,8 +102,10 @@ function reducer(state = initialState, action) {
 const store = createStore(
     reducer,
     composeWithDevTools(applyMiddleware(
-        thunkMiddleware
+        thunkMiddleware,
+        createLogger()
     ))
+    
 );
 
 export default store;
