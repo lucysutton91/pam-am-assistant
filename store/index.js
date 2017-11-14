@@ -76,11 +76,11 @@ function reducer(state = initialState, action) {
     let newState;
     switch (action.type) {
 
-        case SET_ALARM:
+        case SET_WAKEUP:
             newState = Object.assign({}, state, { wakeUpTime: action.time });
             break;
 
-        case UPDATE_ALARM:
+        case UPDATE_WAKEUP:
             newState = Object.assign({}, state, { wakeUpTime: action.time });
             break;
 
@@ -100,8 +100,7 @@ function reducer(state = initialState, action) {
 const store = createStore(
     reducer,
     composeWithDevTools(applyMiddleware(
-        thunkMiddleware,
-        createLogger()
+        thunkMiddleware
     ))
 );
 

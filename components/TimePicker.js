@@ -6,10 +6,6 @@ import store from '../store';
 export default class MyDatePicker extends Component {
     constructor(props) {
         super(props)
-        // this.state = {
-        //     time:"09:30",
-        //     changed: false
-        // }
         this.state = store.getState();
     }
     componentDidMount() {
@@ -24,34 +20,65 @@ export default class MyDatePicker extends Component {
         console.log('state', this.state)
         return (
             <View style={styles.container}>
-                <Text style={styles.text}>click to schedule wakeup</Text>
-                <DatePicker
-                    style={styles.picker}
-                    date={this.state.time}
-                    mode="time"
-                    format="HH:mm"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    minuteInterval={1}
-                    showIcon={false}
-                    customStyles={{
-                        dateInput: {
-                            borderRadius: 5
-                        }
-                    }}
-                    onDateChange={(time) => { this.setState({ time: time, changed: true }); }}
-                />
-                {
-                    this.state.changed === true ?
-                        <View style={styles.confirmed}>
-                            <Text>your alarm is set for {this.state.time}</Text>
-                        </View>
-                        :
-                        <View style={styles.none}>
-                            <Text>no alarm scheduled</Text>
-                        </View>
-                }
-
+                <View style={styles.container}>
+                    <Text style={styles.text}>click to schedule wakeup</Text>
+                    <DatePicker
+                        style={styles.picker}
+                        date={this.state.wakeUpTime}
+                        mode="time"
+                        format="HH:mm"
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        minuteInterval={1}
+                        showIcon={false}
+                        customStyles={{
+                            dateInput: {
+                                borderRadius: 5
+                            }
+                        }}
+                        onDateChange={(time) => { this.setState({ wakeUpTime: time, alarmSet: true }); }}
+                    />
+                    {
+                        this.state.alarmSet === true ?
+                            <View style={styles.confirmed}>
+                                <Text>your alarm is set for {this.state.wakeUpTime}</Text>
+                            </View>
+                            :
+                            <View style={styles.none}>
+                                <Text>no alarm scheduled</Text>
+                            </View>
+                    }
+                </View>
+                <View style={styles.container}>
+                    <Text style={styles.text}>click to schedule departure</Text>
+                    <DatePicker
+                        style={styles.picker}
+                        date={this.state.leaveTime}
+                        mode="time"
+                        format="HH:mm"
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        minuteInterval={1}
+                        showIcon={false}
+                        customStyles={{
+                            dateInput: {
+                                borderRadius: 5
+                            }
+                        }}
+                        onDateChange={(time) => { this.setState({ leaveTime: time, leaveSet: true }); }}
+                    />
+                    {
+                        this.state.leaveSet === true ?
+                            <View style={styles.confirmed}>
+                                <Text>departure is scheduled for {this.state.leaveTime}</Text>
+                            </View>
+                            :
+                            <View style={styles.none}>
+                                <Text>no departure scheduled</Text>
+                            </View>
+                    }
+                </View>
+                
             </View>
         )
     }
