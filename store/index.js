@@ -9,30 +9,25 @@ const initialState = {
     wakeUpTime: '09:30',
     leaveTime: '10:00',
     alarmSet: false,
-    leaveSet: false
+    leaveSet: false,
+    time: new Date()
 };
 
 // ACTION TYPES
 
 const SET_WAKEUP = 'SET_WAKEUP';
-const UPDATE_WAKEUP = 'UPDATE_WAKEUP';
 const GET_WAKEUP = 'GET_WAKEUP';
 const SET_LEAVE = 'SET_LEAVE';
-const UPDATE_LEAVE = 'UPDATE_LEAVE';
 const GET_LEAVE = 'GET_LEAVE';
 const TOGGLE_ALARM_STATUS = 'TOGGLE_ALARM_STATUS';
 const TOGGLE_LEAVE_STATUS = 'TOGGLE_LEAVE_STATUS';
+const SET_TIME = 'SET_TIME';
 
 
 // ACTION CREATORS
 
 export function setAlarm(time) {
     const action = { type: SET_WAKEUP, time };
-    return action;
-}
-
-export function updateAlarm(time) {
-    const action = { type: UPDATE_WAKEUP, time };
     return action;
 }
 
@@ -43,11 +38,6 @@ export function getAlarm(time) {
 
 export function setLeave(time) {
     const action = { type: SET_LEAVE, time };
-    return action;
-}
-
-export function updateLeave(time) {
-    const action = { type: UPDATE_LEAVE, time };
     return action;
 }
 
@@ -66,6 +56,11 @@ export function toggleLeaveStatus(boolean) {
     return action;
 }
 
+export function setCurrentTime(time) {
+    const action = { type: SET_TIME, time };
+    return action;
+}
+
 // THUNK CREATORS
 
 // Should I put calendar events here?
@@ -75,11 +70,9 @@ export function toggleLeaveStatus(boolean) {
 function reducer(state = initialState, action) {
     let newState;
     switch (action.type) {
-
         case SET_WAKEUP:
             newState = Object.assign({}, state, { wakeUpTime: action.time });
             break;
-
         case SET_LEAVE:
             newState = Object.assign({}, state, { leaveTime: action.time });
             break;
@@ -89,7 +82,9 @@ function reducer(state = initialState, action) {
         case TOGGLE_LEAVE_STATUS:
             newState = Object.assign({}, state, { leaveSet: action.boolean });
             break;
-        
+        case SET_TIME:
+            newState = Object.assign({}, state, { time: action.time });
+            break;
         default:
             newState = state;
             break;

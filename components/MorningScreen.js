@@ -1,85 +1,63 @@
-import React, {Component} from 'react';
-import {
-	View,
-	Text,
-  StyleSheet,
-  StatusBar
-} from 'react-native';
-
-// import RNCalendarEvents from 'react-native-calendar-events';
+import React from 'react';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+import store, { setAlarm, toggleAlarmStatus, setLeave, toggleLeaveStatus, setCurrentTime } from '../store';
+import DatePicker from 'react-native-datepicker';
 import moment, { diff } from 'moment';
-import timer from 'moment-timer';
-//import ReactMomentCountDown from 'react-moment-countdown'
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: 'pink',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	timeText: {
-		color: 'black',
-		fontSize: 40,
-	},
-	dateText: {
-		color: 'black',
-		fontSize: 40,
-  },
-  status: {
-    backgroundColor: '#FFFFFF50',
+export default class MorningScreen extends React.Component {
+    static navigationOptions = {
+      title: 'Morning Screen',
+    };
+    constructor(props) {
+      super(props)
+      this.state = store.getState();
+    }
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(() => this.setState(store.getState()));
+    }
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
+  
+    render() {
+        setTimeout(() => {
+			store.dispatch(setCurrentTime(new Date()))
+        }, 1000);
+      return (
+        <View style={styles.container}>
+          <Text>{moment(this.state.time).format('LL')}</Text>
+        </View>
+      );
+    }
   }
-})
-
-export default class MorningScreen extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			time: new Date(),
-			timeToLeave: new Date(2017, 10, 10, 19, 0, 0, 0),
-      //timeRemaining: this.timeToLeave.getTime() - this.time.getTime()
-		};
-		this.onSet = this.onSet.bind(this);
-	}
-	onSet () {
-		RNCalendarEvents.saveEvent('title', {
-			location: 'location',
-			notes: 'notes',
-			startDate: '2017-11-12T14:00:00.000Z',
-			endDate: '2017-11-12T14:00:00.000Z',
-			alarms: [{
-				date: -1
-			}]
-		});
-	}
-
-	render() {
-		setTimeout(() => {
-			this.setState({
-				time: new Date()
-			});
-		}, 1000);
-
-		const timeRemaining = this.state.timeToLeave.getTime() - this.state.time.getTime();
-		const mom = moment.duration(timeRemaining).toISOString();
-		const hours = mom.slice(mom.indexOf('T') + 1, mom.indexOf('T') + 2);
-		const minutes = mom.slice(mom.indexOf('H') + 1, mom.indexOf('T') + 3);
-		const formatted = minutes
-		return (
-			<View style={styles.container}>
-        <StatusBar style={styles.status} />
-        <Text style={styles.dateText}>Current Time/Date:</Text>
-				<Text style={styles.timeText}>{moment(this.state.time).format('LLLL')}</Text>
-        <Text style={styles.dateText}>Time to Leave:</Text>
-        <Text style={styles.timeText}>{moment(this.state.timeToLeave).format('LLLL')}</Text>
-        <Text style={styles.dateText}>Time Remaining:</Text>
-				<Text style={styles.timeText}>{formatted}</Text>
-			</View>
-		)
-	}
-}
-// eventTime = moment('27-11-2020 08:30:00', 'DD-MM-YYYY HH:mm:ss').unix(),
-// currentTime = moment().unix(),
-// diffTime = eventTime - currentTime,
-// duration = moment.duration(diffTime * 1000, 'milliseconds'),
-
+  const styles = StyleSheet.create({
+    text: {
+        fontSize: 20,
+        textAlign: 'center',
+        marginBottom: 10
+    },
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF'
+    },
+    picker: {
+        width: 250,
+        margin: 10
+    },
+    confirmed: {
+        width: 250,
+        height: 40,
+        borderColor: '#7FF6CC',
+        borderStyle: 'solid',
+        borderWidth: 1,
+        alignItems: 'center',
+        borderRadius: 5,
+        justifyContent: 'center',
+        margin: 5
+    },
+    none: {
+      alignItems: 'center'
+    }
+  });
