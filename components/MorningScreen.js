@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import store, { setAlarm, toggleAlarmStatus, setLeave, toggleLeaveStatus, setCurrentTime } from '../store';
 import DatePicker from 'react-native-datepicker';
@@ -21,12 +21,21 @@ export default class MorningScreen extends React.Component {
     }
   
     render() {
+      let timeRemaining = new Date(2017, 10, 14, 17, 30) - new Date().getTime();
         setTimeout(() => {
-			store.dispatch(setCurrentTime(new Date()))
+          store.dispatch(setCurrentTime(new Date()))
+          timeRemaining = new Date(2017, 10, 14, 17, 30) - new Date().getTime();
         }, 1000);
+
       return (
         <View style={styles.container}>
-          <Text>{moment(this.state.time).format('LL')}</Text>
+          <Text style={styles.text}>{moment(this.state.time).format('LL')}</Text>
+          <Text style={styles.text}>You need to leave at {this.state.leaveTime}</Text>
+          <Text style={styles.text}> You have {timeRemaining} milliseconds to get out of here.</Text>
+          <Image
+            style={{width: 50, height: 50}}
+            source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
+          />
         </View>
       );
     }

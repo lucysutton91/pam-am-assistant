@@ -4,9 +4,8 @@ import { View, Text, StyleSheet, Button } from 'react-native';
 import store, { setAlarm, toggleAlarmStatus, setLeave, toggleLeaveStatus } from '../store';
 
 export default class SetAlarm extends React.Component {
-    static navigationOptions = {
-      title: 'Alarms',
-    };
+    
+    
     constructor(props) {
         super(props)
         this.state = store.getState();
@@ -20,7 +19,7 @@ export default class SetAlarm extends React.Component {
     }
   
     render() {
-        console.log('state', this.state)
+        // console.log('state', this.state)
         return (
             <View style={styles.container}>
                 <View style={styles.container}>
